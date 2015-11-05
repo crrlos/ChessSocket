@@ -17,45 +17,53 @@ package chesssocketserver;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+public class Jugador extends Thread {
 
-public class Jugador extends Thread{
     Socket jugadorOrigen;
     Socket jugadorDestino;
     String nombreJugador;
-    
+
     DataInputStream in;
     DataOutputStream out;
-    
-    static ArrayList<Jugador>jugadores = new ArrayList<>();
+
+    static ArrayList<Jugador> jugadores = new ArrayList<>();
 
     @Override
     public void run() {
-        super.run(); 
-        while(true){
+        super.run();
+        while (true) {
             try {
                 Thread.sleep(250);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            
+
+            try {
+                in = new DataInputStream(jugadorOrigen.getInputStream());
+                int op = in.readInt();
+                
+                
+            } catch (IOException ex) {
+                Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
     }
-    
-    private void invitarJugador(String nombre){
-    
-        
+
+    private void invitarJugador(String nombre) {
+
     }
-    private void enviarInvitacion(){
-    
+
+    private void enviarInvitacion() {
+
     }
-    
-    
+
     public static ArrayList<Jugador> getJugadores() {
         return jugadores;
     }
@@ -68,7 +76,6 @@ public class Jugador extends Thread{
         this.nombreJugador = nombreJugador;
     }
 
-    
     public Socket getJugadorOrigen() {
         return jugadorOrigen;
     }
@@ -84,7 +91,5 @@ public class Jugador extends Thread{
     public void setJugadorDestino(Socket jugadorDestino) {
         this.jugadorDestino = jugadorDestino;
     }
-    
-    
-    
+
 }
