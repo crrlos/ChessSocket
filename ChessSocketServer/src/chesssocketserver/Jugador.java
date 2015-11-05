@@ -93,6 +93,18 @@ public class Jugador extends Thread {
         }
         return 0;
     }
+    private void aceptarInvitacion(){
+        try {
+            in = new DataInputStream(jugadorOrigen.getInputStream());
+            jugadorDestino = getSocketJugador(in.readUTF());
+            out = new DataOutputStream(jugadorDestino.getOutputStream());
+            out.writeInt(10);
+        } catch (IOException ex) {
+            Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+      
+    }
 
     private Socket getSocketJugador(String nombre) {
         Socket socket = null;
