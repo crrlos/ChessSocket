@@ -28,17 +28,18 @@ public class ChessSocketServer {
             try {
                 jugadorSocket = serverSocket.accept();
                 in = new DataInputStream(jugadorSocket.getInputStream());
-
+                
             } catch (IOException ex) {
                 Logger.getLogger(ChessSocketServer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
 
-    private void buscar(String nombreJugador) {
+    private boolean buscarActualizar(String nombreJugador) {
         for (Jugador j : Jugador.getJugadores()) {
-
+                
         }
+        return false;
     }
 
     public static void main(String[] args) {
