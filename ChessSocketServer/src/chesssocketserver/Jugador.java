@@ -15,7 +15,52 @@
  */
 package chesssocketserver;
 
+import java.net.Socket;
+import java.util.ArrayList;
 
-public class Jugador {
+
+public class Jugador extends Thread{
+    Socket jugadorOrigen;
+    Socket jugadorDestino;
+    String nombreJugador;
+    
+    static ArrayList<Jugador>jugadores = new ArrayList<>();
+
+    @Override
+    public void run() {
+        super.run(); 
+    }
+
+    
+    public static ArrayList<Jugador> getJugadores() {
+        return jugadores;
+    }
+
+    public String getNombreJugador() {
+        return nombreJugador;
+    }
+
+    public void setNombreJugador(String nombreJugador) {
+        this.nombreJugador = nombreJugador;
+    }
+
+    
+    public Socket getJugadorOrigen() {
+        return jugadorOrigen;
+    }
+
+    public void setJugadorOrigen(Socket jugadorOrigen) {
+        this.jugadorOrigen = jugadorOrigen;
+    }
+
+    public Socket getJugadorDestino() {
+        return jugadorDestino;
+    }
+
+    public void setJugadorDestino(Socket jugadorDestino) {
+        this.jugadorDestino = jugadorDestino;
+    }
+    
+    
     
 }
