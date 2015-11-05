@@ -28,7 +28,7 @@ public class Jugador extends Thread {
     Socket jugadorOrigen;
     Socket jugadorDestino;
     String nombreJugador;
-
+    
     DataInputStream in;
     DataOutputStream out;
 
@@ -78,16 +78,15 @@ public class Jugador extends Thread {
     }
 
     private int enviarInvitacion(String nombre) {
-        for (Jugador j : jugadores) {
-            if (j.getNombreJugador().equals(nombre)) {
-                try {
-                    out = new DataOutputStream(j.getJugadorOrigen().getOutputStream());
-                    out.writeUTF(this.nombreJugador);
-                    return 1;
-                } catch (IOException ex) {
-                    Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                break;
+        jugadorDestino = getSocketJugador(nombre);
+        if(jugadorDestino != null)
+        {
+            try {
+                out = new DataOutputStream(jugadorDestino.getOutputStream());
+                out.writeUTF(nombreJugador);
+                return 1;
+            } catch (IOException ex) {
+                Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return 0;
