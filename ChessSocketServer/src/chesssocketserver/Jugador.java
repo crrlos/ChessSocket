@@ -15,6 +15,8 @@
  */
 package chesssocketserver;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -25,6 +27,9 @@ public class Jugador extends Thread{
     Socket jugadorOrigen;
     Socket jugadorDestino;
     String nombreJugador;
+    
+    DataInputStream in;
+    DataOutputStream out;
     
     static ArrayList<Jugador>jugadores = new ArrayList<>();
 
