@@ -31,6 +31,8 @@ public class Jugador extends Thread {
     
     DataInputStream in;
     DataOutputStream out;
+    
+    boolean jugando;
 
     static ArrayList<Jugador> jugadores = new ArrayList<>();
 
@@ -129,5 +131,15 @@ public class Jugador extends Thread {
     public void setJugadorDestino(Socket jugadorDestino) {
         this.jugadorDestino = jugadorDestino;
     }
+
+    public boolean isJugando() {
+        return jugando;
+    }
+
+    public void setJugando(boolean jugando) {
+        this.jugando = jugando;
+    }
+    
+    
 
 }
