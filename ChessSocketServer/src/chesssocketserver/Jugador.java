@@ -17,6 +17,8 @@ package chesssocketserver;
 
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class Jugador extends Thread{
@@ -29,8 +31,25 @@ public class Jugador extends Thread{
     @Override
     public void run() {
         super.run(); 
+        while(true){
+            try {
+                Thread.sleep(250);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
+        }
     }
-
+    
+    private void invitarJugador(String nombre){
+    
+        
+    }
+    private void enviarInvitacion(){
+    
+    }
+    
     
     public static ArrayList<Jugador> getJugadores() {
         return jugadores;
