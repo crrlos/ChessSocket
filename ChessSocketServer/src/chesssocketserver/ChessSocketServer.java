@@ -36,13 +36,14 @@ public class ChessSocketServer {
                 Jugador jugador = new Jugador();
                 jugador.setJugadorOrigen(jugadorSocket);
                 jugador.setNombreJugador(nombre);
+                jugador.start();
                 Jugador.jugadores.add(jugador);
                 
                 }
             } catch (IOException ex) {
                 Logger.getLogger(ChessSocketServer.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
+           }
     }
     
     private boolean buscarActualizar(String nombreJugador) {
