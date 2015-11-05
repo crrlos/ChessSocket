@@ -9,12 +9,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ChessSocketServer {
-
+    
     ServerSocket serverSocket;
     Socket jugadorSocket;
     DataInputStream in;
     DataOutputStream out;
-
+    
     public ChessSocketServer() {
         try {
             serverSocket = new ServerSocket(40000);
@@ -22,30 +22,43 @@ public class ChessSocketServer {
             Logger.getLogger(ChessSocketServer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public void start() {
         while (true) {
             try {
                 jugadorSocket = serverSocket.accept();
                 in = new DataInputStream(jugadorSocket.getInputStream());
                 
+                String nombre = in.readUTF();
+                
+                if(!buscarActualizar(nombre)){
+                    
+                Jugador jugador = new Jugador();
+                jugador.setJugadorOrigen(jugadorSocket);
+                jugador.setNombreJugador(nombre);
+                Jugador.jugadores.add(jugador);
+                
+                }
             } catch (IOException ex) {
                 Logger.getLogger(ChessSocketServer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
-
+    
     private boolean buscarActualizar(String nombreJugador) {
         for (Jugador j : Jugador.getJugadores()) {
-                
+            if (j.getNombreJugador().equals(nombreJugador)) {
+                j.setJugadorOrigen(jugadorSocket);
+                return true;
+            }
         }
         return false;
     }
-
+    
     public static void main(String[] args) {
         ChessSocketServer socketServer = new ChessSocketServer();
         socketServer.start();
-
+        
     }
-
+    
 }
