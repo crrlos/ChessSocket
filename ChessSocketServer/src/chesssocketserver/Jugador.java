@@ -47,15 +47,14 @@ public class Jugador extends Thread {
             try {
                 in = new DataInputStream(jugadorOrigen.getInputStream());
                 int op = in.readInt();
-                
-                switch(op)
-                {
+
+                switch (op) {
                     case 1:
                         invitarJugador();
                         break;
-                        
+
                 }
-                
+
             } catch (IOException ex) {
                 Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -68,10 +67,10 @@ public class Jugador extends Thread {
             String nombre;
             in = new DataInputStream(jugadorOrigen.getInputStream());
             nombre = in.readUTF();
-            
+
             out = new DataOutputStream(jugadorOrigen.getOutputStream());
             out.writeInt(enviarInvitacion(nombre));
-            
+
         } catch (IOException ex) {
             Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -79,10 +78,8 @@ public class Jugador extends Thread {
     }
 
     private int enviarInvitacion(String nombre) {
-        for(Jugador j: jugadores)
-        {
-            if(j.getNombreJugador().equals(nombre))
-            {
+        for (Jugador j : jugadores) {
+            if (j.getNombreJugador().equals(nombre)) {
                 try {
                     out = new DataOutputStream(j.getJugadorOrigen().getOutputStream());
                     out.writeUTF(this.nombreJugador);
@@ -94,6 +91,16 @@ public class Jugador extends Thread {
             }
         }
         return 0;
+    }
+
+    private Socket getSocketJugador(String nombre) {
+        Socket socket = null;
+        for (Jugador j : jugadores) {
+            if (j.getNombreJugador().equals(nombre)) {
+                socket = j.getJugadorOrigen();
+            }
+        }
+        return socket;
     }
 
     public static ArrayList<Jugador> getJugadores() {
