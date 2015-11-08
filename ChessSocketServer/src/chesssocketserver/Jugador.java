@@ -28,10 +28,12 @@ public class Jugador extends Thread {
     Socket jugadorOrigen;
     Socket jugadorDestino;
     String nombreJugador;
-    
+
+    int tiempo;
+
     DataInputStream in;
     DataOutputStream out;
-    
+
     boolean jugando;
 
     static ArrayList<Jugador> jugadores = new ArrayList<>();
@@ -40,19 +42,31 @@ public class Jugador extends Thread {
     public void run() {
         super.run();
         while (true) {
+            /**
+             * pausa del hilo
+             */
             try {
                 Thread.sleep(250);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
             }
+            /**
+             * fin pausa del hilo
+             */
 
             try {
                 in = new DataInputStream(jugadorOrigen.getInputStream());
                 int op = in.readInt();
-
+                System.out.println(op);
                 switch (op) {
                     case 1:
                         invitarJugador();
+                        break;
+                    case 2:
+                        aceptarInvitacion();
+                        break;
+                    case 3:
+                        enviarMovimiento();
                         break;
 
                 }
@@ -69,9 +83,7 @@ public class Jugador extends Thread {
             String nombre;
             in = new DataInputStream(jugadorOrigen.getInputStream());
             nombre = in.readUTF();
-
-            out = new DataOutputStream(jugadorOrigen.getOutputStream());
-            out.writeInt(enviarInvitacion(nombre));
+            enviarInvitacion(nombre);
 
         } catch (IOException ex) {
             Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
@@ -81,11 +93,13 @@ public class Jugador extends Thread {
 
     private int enviarInvitacion(String nombre) {
         jugadorDestino = getSocketJugador(nombre);
-        if(jugadorDestino != null)
-        {
+        if (jugadorDestino != null) {
             try {
                 out = new DataOutputStream(jugadorDestino.getOutputStream());
                 out.writeUTF(nombreJugador);
+                System.out.println("invitando a: " + jugadorDestino);
+                System.out.println("origen " + jugadorOrigen.toString() + " destino :" + jugadorDestino);
+
                 return 1;
             } catch (IOException ex) {
                 Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
@@ -93,7 +107,8 @@ public class Jugador extends Thread {
         }
         return 0;
     }
-    private void aceptarInvitacion(){
+
+    private void aceptarInvitacion() {
         try {
             in = new DataInputStream(jugadorOrigen.getInputStream());
             jugadorDestino = getSocketJugador(in.readUTF());
@@ -102,8 +117,7 @@ public class Jugador extends Thread {
         } catch (IOException ex) {
             Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-      
+
     }
 
     private Socket getSocketJugador(String nombre) {
@@ -114,6 +128,17 @@ public class Jugador extends Thread {
             }
         }
         return socket;
+    }
+
+    private void enviarMovimiento() {
+        try {
+            in = new DataInputStream(jugadorOrigen.getInputStream());
+            out = new DataOutputStream(jugadorDestino.getOutputStream());
+            out.writeUTF(in.readUTF());
+        } catch (IOException ex) {
+            Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     public static ArrayList<Jugador> getJugadores() {
@@ -151,7 +176,13 @@ public class Jugador extends Thread {
     public void setJugando(boolean jugando) {
         this.jugando = jugando;
     }
-    
-    
+
+    public int getTiempo() {
+        return tiempo;
+    }
+
+    public void setTiempo(int tiempo) {
+        this.tiempo = tiempo;
+    }
 
 }
