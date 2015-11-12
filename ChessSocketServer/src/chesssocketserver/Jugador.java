@@ -30,11 +30,10 @@ public class Jugador extends Thread {
     String nombreJugador;
 
     int tiempo;
+    boolean jugando;
 
     DataInputStream in;
     DataOutputStream out;
-
-    boolean jugando;
 
     static ArrayList<Jugador> jugadores = new ArrayList<>();
 
@@ -42,25 +41,17 @@ public class Jugador extends Thread {
     public void run() {
         super.run();
         while (true) {
-            /**
-             * pausa del hilo
-             */
-            try {
-                Thread.sleep(250);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            /**
-             * fin pausa del hilo
-             */
 
+            /**
+             * Panel de control*
+             */
             try {
                 in = new DataInputStream(jugadorOrigen.getInputStream());
                 int op = in.readInt();
                 System.out.println(op);
                 switch (op) {
                     case 1:
-                        invitarJugador();
+                        enviarInvitacion();
                         break;
                     case 2:
                         aceptarInvitacion();
@@ -78,42 +69,43 @@ public class Jugador extends Thread {
         }
     }
 
-    private void invitarJugador() {
+    private int enviarInvitacion() {
+
+        String nombre = "";
         try {
-            String nombre;
             in = new DataInputStream(jugadorOrigen.getInputStream());
             nombre = in.readUTF();
-            enviarInvitacion(nombre);
 
-        } catch (IOException ex) {
-            Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
-
-    private int enviarInvitacion(String nombre) {
-        jugadorDestino = getSocketJugador(nombre);
-        if (jugadorDestino != null) {
-            try {
+            jugadorDestino = getSocketJugador(nombre);
+            if (jugadorDestino != null) {
+                out = new DataOutputStream(jugadorDestino.getOutputStream());
+                out.writeInt(1);
                 out = new DataOutputStream(jugadorDestino.getOutputStream());
                 out.writeUTF(nombreJugador);
                 System.out.println("invitando a: " + jugadorDestino);
                 System.out.println("origen " + jugadorOrigen.toString() + " destino :" + jugadorDestino);
 
                 return 1;
-            } catch (IOException ex) {
-                Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
+
             }
+        } catch (IOException ex) {
         }
+
         return 0;
     }
 
     private void aceptarInvitacion() {
         try {
             in = new DataInputStream(jugadorOrigen.getInputStream());
+            int respuesta = in.readInt();
+            in = new DataInputStream(jugadorOrigen.getInputStream());
             jugadorDestino = getSocketJugador(in.readUTF());
             out = new DataOutputStream(jugadorDestino.getOutputStream());
-            out.writeInt(10);
+            out.writeInt(2);
+            out = new DataOutputStream(jugadorDestino.getOutputStream());
+            out.writeInt(respuesta);
+            System.out.println(out);
+
         } catch (IOException ex) {
             Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -132,9 +124,14 @@ public class Jugador extends Thread {
 
     private void enviarMovimiento() {
         try {
+            String move;
             in = new DataInputStream(jugadorOrigen.getInputStream());
+            move = in.readUTF();
             out = new DataOutputStream(jugadorDestino.getOutputStream());
-            out.writeUTF(in.readUTF());
+            out.writeInt(3);
+            out = new DataOutputStream(jugadorDestino.getOutputStream());
+            out.writeUTF(move);
+            System.out.println(move);
         } catch (IOException ex) {
             Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
         }
