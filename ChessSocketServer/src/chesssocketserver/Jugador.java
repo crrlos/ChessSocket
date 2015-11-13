@@ -63,7 +63,8 @@ public class Jugador extends Thread {
                 }
 
             } catch (IOException ex) {
-                Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
+                //Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
+                jugadores.remove(this);
             }
 
         }
@@ -72,16 +73,22 @@ public class Jugador extends Thread {
     private int enviarInvitacion() {
 
         String nombre = "";
+        int bando;
         try {
-            in = new DataInputStream(jugadorOrigen.getInputStream());
+            //in = new DataInputStream(jugadorOrigen.getInputStream());
             nombre = in.readUTF();
+            //in = new DataInputStream(jugadorOrigen.getInputStream());
+            //bando = in.readInt();
 
             jugadorDestino = getSocketJugador(nombre);
             if (jugadorDestino != null) {
                 out = new DataOutputStream(jugadorDestino.getOutputStream());
                 out.writeInt(1);
-                out = new DataOutputStream(jugadorDestino.getOutputStream());
+                //out = new DataOutputStream(jugadorDestino.getOutputStream());
                 out.writeUTF(nombreJugador);
+                //out = new DataOutputStream(jugadorDestino.getOutputStream());
+               // out.writeInt(bando);
+                
                 System.out.println("invitando a: " + jugadorDestino);
                 System.out.println("origen " + jugadorOrigen.toString() + " destino :" + jugadorDestino);
 
