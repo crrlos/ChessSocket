@@ -61,7 +61,7 @@ public class ChessSocketServer {
     private boolean buscarActualizar(String nombreJugador) {
         for (Jugador j : Jugador.getJugadores()) {
             if (j.getNombreJugador().equals(nombreJugador)) {
-                
+                System.out.println("existe");
                 Jugador jugador = new Jugador();
                 jugador.setJugadorDestino(j.getJugadorDestino());
                 jugador.setTiempo(j.getTiempo());
