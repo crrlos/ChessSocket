@@ -32,17 +32,19 @@ public class ChessSocketServer {
                 in = new DataInputStream(jugadorSocket.getInputStream());
 
                 String nombre = in.readUTF();
+                System.out.println("recibido: "+nombre);
 
-                if (!buscarActualizar(nombre)) {
+                /*if (!buscarActualizar(nombre)) {
 
                     Jugador jugador = new Jugador();
                     jugador.setJugadorOrigen(jugadorSocket);
                     jugador.setNombreJugador(nombre);
-                    jugador.start();
+                    //jugador.start();
                     Jugador.jugadores.add(jugador);
 
-                }
+                }*/
             } catch (IOException ex) {
+                System.out.println("error en la escucha");
                 Logger.getLogger(ChessSocketServer.class.getName()).log(Level.SEVERE, null, ex);
             }
 

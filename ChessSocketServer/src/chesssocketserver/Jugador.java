@@ -40,7 +40,8 @@ public class Jugador extends Thread {
     @Override
     public void run() {
         super.run();
-        while (true) {
+        boolean continuar = true;
+        while (continuar) {
 
             /**
              * Panel de control*
@@ -59,13 +60,17 @@ public class Jugador extends Thread {
                     case 3:
                         enviarMovimiento();
                         break;
+                
 
                 }
+               
 
             } catch (IOException ex) {
-                //Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
+                continuar = false;
                 jugadores.remove(this);
-            }
+                System.out.println("terminado");
+            } 
 
         }
     }
